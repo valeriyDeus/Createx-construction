@@ -28,7 +28,7 @@
 			--primary-color: #ffd700;
 			--primary-bg-color: #b99a53;
 			--dark-color: #1a1a1a;
-			--light-color: #fff;
+			--light-color: #e4e4e4;
 			--border-color: #4a4a4a;
 			--transition-duration: 0.3s;
 			--container-width: 75rem;
@@ -157,7 +157,21 @@
 		}
 
 		.rootpage__list {
-			padding-left: 1.0625rem;
+			list-style-type: none;
+			counter-reset: item;
+		}
+
+		.rootpage__list li {
+			position: relative;
+			padding-left: 2.0625rem;
+		}
+
+		.rootpage__list li::before {
+			counter-increment: item;
+			content: counter(item, decimal-leading-zero);
+			position: absolute;
+			top: 0;
+			left: 0;
 		}
 
 		.rootpage__list li:not(:last-child) {
@@ -224,7 +238,7 @@
 					<h1 class="rootpage__title title title--big">Верстка (Layout) «Createx-construction»</h1>
 					<div class="rootpage__project">
 						<h2 class="rootpage__title title">Готові сторінки (Ready pages):</h2>
-						<ol class="rootpage__list">
+						<ul class="rootpage__list">
 							<li><a target="_blank" href="home.html">Головна (Home)</a></li>
 							<li><a target="_blank" href="services.html">Послуги (Services)</a></li>
 							<li><a target="_blank" href="service.html">Послуга (Service)</a></li>
@@ -239,7 +253,7 @@
 							</li>
 							<li><a target="_blank" href="contacts.html">Контакти (Contacts)</a>
 							</li>
-						</ol>
+						</ul>
 					</div>
 				</div>
 			</section>

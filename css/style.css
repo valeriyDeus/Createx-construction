@@ -3097,8 +3097,8 @@ body::after {
   min-height: 2.75rem;
   -webkit-padding-start: .625rem;
   padding-inline-start: .625rem;
-  -webkit-padding-end: 1.875rem;
-  padding-inline-end: 1.875rem;
+  -webkit-padding-end: .625rem;
+  padding-inline-end: .625rem;
   border: .0625rem solid #ddd;
   border-radius: .25rem;
   -webkit-transition: border-color .3s;
@@ -3133,6 +3133,7 @@ body::after {
   text-align: start;
   -webkit-transition: color .3s;
   transition: color .3s;
+  z-index: 1;
   cursor: pointer
 }
 .select__button {
