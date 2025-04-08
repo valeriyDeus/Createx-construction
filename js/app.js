@@ -7966,11 +7966,12 @@
                 autoHeight: false
             };
             if (modulesArray.length > 0) modulesArray.forEach((module => {
-                if (module?.name === "Navigation") defaultOptions.navigation = navigationSlider(sliderNavigationPrev, sliderNavigationNext);
-                if (module?.name === "Pagination") defaultOptions.pagination = paginationSlider(sliderPagination, clickablePagination, renderBullets);
-                if (module?.name === "FreeMode") defaultOptions.freeMode = true;
-                if (module?.name === "Autoplay") defaultOptions.autoplay = autoPlaySlider(autoPlaySliderDelay, disableOnInteraction);
+                if (module === Navigation) defaultOptions.navigation = navigationSlider(sliderNavigationPrev, sliderNavigationNext);
+                if (module === Pagination) defaultOptions.pagination = paginationSlider(sliderPagination, clickablePagination, renderBullets);
+                if (module === freeMode) defaultOptions.freeMode = true;
+                if (module === Autoplay) defaultOptions.autoplay = autoPlaySlider(autoPlaySliderDelay, disableOnInteraction);
             }));
+            console.log("Swiper options:", defaultOptions);
             return defaultOptions;
         };
         const initProjectSlider = () => {
