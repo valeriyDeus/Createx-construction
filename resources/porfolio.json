@@ -1,0 +1,112 @@
+{
+  "portfolio": [
+    {
+      "id": "01",
+      "image": "img/portfolio/image01.webp",
+      "title": "Red Finger Building",
+      "desc": "Business Centers",
+      "type": "construction",
+      "selected": true,
+      "link": "#"
+    },
+    {
+      "id": "02",
+      "image": "img/portfolio/image02.webp",
+      "title": "Cubes Building",
+      "desc": "Business Centers",
+      "type": "construction",
+      "selected": true,
+      "link": "#"
+    },
+    {
+      "id": "03",
+      "image": "img/portfolio/image03.webp",
+      "title": "The Pencil Building",
+      "desc": "Stores & Malls",
+      "type": "construction",
+      "selected": true,
+      "link": "#"
+    },
+    {
+      "id": "04",
+      "image": "img/portfolio/image04.webp",
+      "title": "Kids Bedroom With Decorations",
+      "desc": "Apartments & flats",
+      "type": "repairs",
+      "selected": false,
+      "link": "#"
+    },
+    {
+      "id": "05",
+      "image": "img/portfolio/image05.webp",
+      "title": "Modern Double Bedroom",
+      "desc": "Apartments & flats",
+      "type": "design",
+      "selected": false,
+      "link": "#"
+    },
+    {
+      "id": "06",
+      "image": "img/portfolio/image06.webp",
+      "title": "Scandinavian Style Interior",
+      "desc": "Private houses",
+      "type": "design",
+      "selected": false,
+      "link": "#"
+    },
+    {
+      "id": "07",
+      "image": "img/portfolio/image06.webp",
+      "title": "Scandinavian Style Interior",
+      "desc": "Private houses",
+      "type": "design",
+      "selected": false,
+      "link": "#"
+    },
+    {
+      "id": "08",
+      "image": "img/portfolio/image05.webp",
+      "title": "Modern Double Bedroom",
+      "desc": "Apartments & flats",
+      "type": "design",
+      "selected": false,
+      "link": "#"
+    },
+    {
+      "id": "09",
+      "image": "img/portfolio/image07.webp",
+      "title": "Luxury Beach House",
+      "desc": "Private houses",
+      "type": "development",
+      "selected": true,
+      "link": "#"
+    },
+    {
+      "id": "10",
+      "image": "img/portfolio/image08.webp",
+      "title": "Brown and Gray Painted House",
+      "desc": "Private houses",
+      "type": "development",
+      "selected": false,
+      "link": "#"
+    },
+    {
+      "id": "11",
+      "image": "img/portfolio/image09.webp",
+      "title": "Modern Cottage",
+      "desc": "Private houses",
+      "type": "development",
+      "selected": true,
+      "link": "#"
+    },
+    {
+      "id": "12",
+      "image": "img/portfolio/image07.webp",
+      "title": "Luxury Beach House",
+      "desc": "Private houses",
+      "type": "development",
+      "selected": true,
+      "link": "#"
+    }
+  ]
+}

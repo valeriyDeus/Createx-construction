@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>News</title>
+	<meta charset="UTF-8">
+	<meta name="format-detection" content="telephone=no">
+	<!-- <style>body{opacity: 0;}</style> -->
+	<link rel="stylesheet" href="css/style.min.css?_v=20250408164713">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<!-- <meta name="robots" content="noindex, nofollow"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<div class="wrapper">
+		<header class="header header--transparent" data-lp>
+			<div class="header__container">
+				<a class="header__logo logo" href="#">
+					<img src="img/logo.svg" alt="Logo">
+				</a>
+				<div class="header__menu menu">
+					<nav class="menu__body">
+						<ul class="menu__list">
+							<li class="menu__item"><a href="#" class="menu__link ">About Us</a></li>
+							<li class="menu__item"><a href="#" class="menu__link ">Services</a></li>
+							<li class="menu__item"><a href="#" class="menu__link ">Work</a></li>
+							<li class="menu__item"><a href="#" class="menu__link menu__link--active">News</a></li>
+							<li class="menu__item"><a href="#" class="menu__link ">Contacts</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="header__contacts contacts-header">
+					<a class="contacts-header__link contacts-header__link--phone" href="tel:4055550128">
+						<svg>
+							<use xlink:href="img/icons/icons.svg#phone"></use>
+						</svg>
+						<div class="contacts-header__contact">
+							<span class="contacts-header__caption">Call us</span>
+							<span class="contacts-header__value">(405) 555-0128</span>
+						</div>
+					</a>
+					<a class="contacts-header__link contacts-header__link--chat" href="mailto:hello@createx.com">
+						<svg>
+							<use xlink:href="img/icons/icons.svg#chat"></use>
+						</svg>
+						<div class="contacts-header__contact">
+							<span class="contacts-header__caption">Talk to us</span>
+							<span class="contacts-header__value">hello@createx.com</span>
+						</div>
+					</a>
+				</div>
+				<button class="header__burger burger-button" data-burger-button aria-label="Open menu" type="button"><span></span></button>
+			</div>
+		</header>
+		<main class="page-news">
+			<section class="page-news__services-hero news-hero" data-hero>
+				<div class="news-hero__content content-hero content-hero--size">
+					<div class="content-hero__container">
+						<div class="content-hero__info">
+							<nav class="breadcrumbs">
+								<ul class="breadcrumbs__list">
+									<li class="breadcrumbs__item">
+										<a class="breadcrumbs__link" href="#">Homepage</a>
+									</li>
+									<li class="breadcrumbs__item">
+										<span class="breadcrumbs__current-page">News</span>
+									</li>
+								</ul>
+							</nav>
+							<div class="content-hero__content-block content-block content-block--hero">
+								<h1 class="content-block__title">NEWS</h1>
+								<div class="content-block__text">
+									<p>
+										Stay tuned with our news, expert tips and articles.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="content-hero__image">
+						<img src="img/news/hero/bg.webp" aria-hidden="true" loading="lazy" alt="">
+					</div>
+				</div>
+			</section>
+			<section class="page-news__news news">
+				<div class="news__container">
+					<div class="news__content-block content-block content-block--medium">
+						<h2 class="content-block__title">Categories</h2>
+					</div>
+					<nav class="tabs-news__navigation" data-news-controls>
+						<button class="tabs-news__button is-active" data-filter="all" type="button">
+							All News
+						</button>
+						<button class="tabs-news__button" data-filter="company" type="button">
+							Company News
+						</button>
+						<button class="tabs-news__button" data-filter="innovation" type="button">
+							Innovation
+						</button>
+						<button class="tabs-news__button" data-filter="industry" type="button">
+							Industry News
+						</button>
+						<button class="tabs-news__button" data-filter="expert-tips" type="button">
+							Expert Tips
+						</button>
+						<button class="tabs-news__button" data-filter="marketing" type="button">
+							Marketing
+						</button>
+					</nav>
+					<div class="tabs-news__content" data-slider="991.98" data-news-content></div>
+					<div class="tabs-news__pagination pagination">
+						<a href="#" aria-label="Previous page" class="pagination__arrow pagination__arrow--prev">
+							<svg>
+								<use xlink:href="img/icons/icons.svg#arrow"></use>
+							</svg>
+						</a>
+						<ul class="pagination__list">
+							<li class="pagination__item pagination__item--active">
+								<a href="#" class="pagination__link">1</a>
+							</li>
+							<li class="pagination__item">
+								<a href="#" class="pagination__link">2</a>
+							</li>
+							<li class="pagination__item">
+								<a href="#" class="pagination__link">3</a>
+							</li>
+							<li class="pagination__item">
+								<a href="#" class="pagination__link">4</a>
+							</li>
+						</ul>
+						<a href="#" aria-label="Next page" class="pagination__arrow pagination__arrow--next">
+							<svg>
+								<use xlink:href="img/icons/icons.svg#arrow"></use>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</section>
+			<section class="page-news__contacts contacts">
+				<div class="contacts__container">
+					<div class="contacts__content">
+						<div class="contacts__content-block content-block content-block--medium">
+							<h2 class="content-block__title">A quick way to discuss details</h2>
+						</div>
+						<form class="contacts__form form" data-form data-dev action="#">
+							<div class="form__field">
+								<label class="form__label" for="c-name">Name*</label>
+								<input class="form__input" id="c-name" name="form[c-name]" data-required data-validate type="text" placeholder="Your name">
+							</div>
+							<div class="form__field">
+								<label class="form__label" for="c-phone">Phone*</label>
+								<input class="form__input" id="c-phone" name="form[c-phone]" data-required data-validate type="tel" placeholder="Your phone number">
+							</div>
+							<div class="form__field">
+								<label class="form__label" for="c-email">Email*</label>
+								<input class="form__input" id="c-email" name="form[c-email]" data-required="email" data-validate type="text" placeholder="Your working email">
+							</div>
+							<div class="form__field">
+								<label class="form__label" for="c-message">Message*</label>
+								<textarea class="form__textarea" name="form[c-message]" placeholder="Your message" data-required data-validate id="c-message"></textarea>
+							</div>
+							<div class="form__field checkbox">
+								<input class="checkbox__input" type="checkbox" name="form[c-agree]" id="c-agree" data-required>
+								<label class="checkbox__label" for="c-agree"></label>
+								<div class="checkbox__text">
+									<p>
+										I agree to receive communications from Createx Construction Bureau.
+									</p>
+								</div>
+							</div>
+							<div class="form__field">
+								<button class="form__button button" type="submit">send request</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<img class="contacts__image" src="img/details/bg.webp" loading="lazy" aria-hidden="true" alt="">
+			</section>
+		</main>
+		<footer class="footer">
+			<div class="footer__container">
+				<div class="footer__body body-footer">
+					<div class="body-footer__column body-footer__column--first">
+						<div class="body-footer__content">
+							<a class="body-footer__logo logo" href="#">
+								<img src="img/logo-footer.svg" alt="Logo">
+							</a>
+							<div class="body-footer__socials socials">
+								<ul class="socials__list">
+									<li class="socials__item">
+										<a class="socials__link" href="#">
+											<svg>
+												<use xlink:href="img/icons/icons.svg#social-whatsapp"></use>
+											</svg>
+										</a>
+									</li>
+									<li class="socials__item">
+										<a class="socials__link" href="#">
+											<svg>
+												<use xlink:href="img/icons/icons.svg#social-messanger"></use>
+											</svg>
+										</a>
+									</li>
+									<li class="socials__item">
+										<a class="socials__link" href="#">
+											<svg>
+												<use xlink:href="img/icons/icons.svg#social-facebook"></use>
+											</svg>
+										</a>
+									</li>
+									<li class="socials__item">
+										<a class="socials__link" href="#">
+											<svg>
+												<use xlink:href="img/icons/icons.svg#social-twitter"></use>
+											</svg>
+										</a>
+									</li>
+									<li class="socials__item">
+										<a class="socials__link" href="#">
+											<svg>
+												<use xlink:href="img/icons/icons.svg#social-youtube"></use>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="body-footer__text">
+								<p>
+									Createx Construction Bureau has been successfully operating in the USA construction market since 2000. We
+									are proud to offer you quality construction and exemplary service. Our mission is to set the highest
+									standards for construction sphere.
+								</p>
+							</div>
+						</div>
+						<div class="body-footer__contacts contacts-footer">
+							<h6 class="contacts-footer__title">HEAD OFFICE</h6>
+							<address class="contacts-footer__address">
+								<ul class="contacts-footer__list">
+									<li class="contacts-footer__item">
+										<span class="contacts-footer__name">Address:</span>
+										<span class="contacts-footer__value">8502 Preston Rd. Inglewood, New York</span>
+									</li>
+									<li class="contacts-footer__item">
+										<span class="contacts-footer__name">Call:</span>
+										<a class="contacts-footer__link" href="tel:4055550128">(405) 555-0128</a>
+									</li>
+									<li class="contacts-footer__item">
+										<span class="contacts-footer__name">Email:</span>
+										<a class="contacts-footer__link" href="mailto:hello@createx.com">hello@createx.com</a>
+									</li>
+								</ul>
+							</address>
+						</div>
+						<nav class="body-footer__navigation navigation-footer navigation-footer--end">
+							<h6 class="navigation-footer__title">WHO WE ARE</h6>
+							<ul class="navigation-footer__list">
+								<li class="navigation-footer__item">
+									<a class="navigation-footer__link" href="#">About Us</a>
+								</li>
+								<li class="navigation-footer__item">
+									<a class="navigation-footer__link" href="#">Available Positions</a>
+								</li>
+								<li class="navigation-footer__item">
+									<a class="navigation-footer__link" href="#">Contacts</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="body-footer__column body-footer__column--second">
+						<div class="body-footer__subscribe subscribe-footer">
+							<h5 class="subscribe-footer__title">Let’s stay in touch</h5>
+							<form class="subscribe-footer__form form-subscribe form" data-dev data-form action="#" method="post">
+								<input class="form__input form__input--subscribe" type="text" name="form[email]" data-required="email" data-validate placeholder="Your email address">
+								<button class="form__button button button--subscribe" type="submit">subscribe</button>
+							</form>
+							<div class="subscribe-footer__text">
+								<p>
+									*Subscribe to our newsletter to receive communications and early updates from Createx Construction Bureau.
+								</p>
+							</div>
+						</div>
+						<nav data-da=".body-footer__column--first,991.98" class="body-footer__navigation navigation-footer">
+							<h6 class="navigation-footer__title">OUR EXPERIENCE</h6>
+							<ul class="navigation-footer__list">
+								<li class="navigation-footer__item">
+									<a class="navigation-footer__link" href="#">Services</a>
+								</li>
+								<li class="navigation-footer__item">
+									<a class="navigation-footer__link" href="#">Work</a>
+								</li>
+								<li class="navigation-footer__item">
+									<a class="navigation-footer__link" href="#">News</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="footer__bootom">
+					<div class="footer__copy">
+						<span>© All rights reserved. Made with</span>
+						<svg>
+							<use xlink:href="img/icons/icons.svg#heart"></use>
+						</svg>
+						<span>by Createx Studio</span>
+					</div>
+					<div class="footer__to-top to-top">
+						<span class="to-top__text">GO TO TOP</span>
+						<button data-goto="[data-hero]" data-goto-header class="to-top__button" aria-label="To Top">
+							<svg>
+								<use xlink:href="img/icons/icons.svg#to-top"></use>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<script src="js/app.min.js?_v=20250408164713"></script>
+
+</body>
+
+</html>
