@@ -4148,14 +4148,6 @@
             }
             return parents;
         }
-        function utils_elementTransitionEnd(el, callback) {
-            function fireCallBack(e) {
-                if (e.target !== el) return;
-                callback.call(el, e);
-                el.removeEventListener("transitionend", fireCallBack);
-            }
-            if (callback) el.addEventListener("transitionend", fireCallBack);
-        }
         function elementOuterSize(el, size, includeMargins) {
             const window = ssr_window_esm_getWindow();
             if (includeMargins) return el[size === "width" ? "offsetWidth" : "offsetHeight"] + parseFloat(window.getComputedStyle(el, null).getPropertyValue(size === "width" ? "margin-right" : "margin-top")) + parseFloat(window.getComputedStyle(el, null).getPropertyValue(size === "width" ? "margin-left" : "margin-bottom"));
@@ -7709,169 +7701,6 @@
                 update
             });
         }
-        function freeMode(_ref) {
-            let {swiper, extendParams, emit, once} = _ref;
-            extendParams({
-                freeMode: {
-                    enabled: false,
-                    momentum: true,
-                    momentumRatio: 1,
-                    momentumBounce: true,
-                    momentumBounceRatio: 1,
-                    momentumVelocityRatio: 1,
-                    sticky: false,
-                    minimumVelocity: .02
-                }
-            });
-            function onTouchStart() {
-                if (swiper.params.cssMode) return;
-                const translate = swiper.getTranslate();
-                swiper.setTranslate(translate);
-                swiper.setTransition(0);
-                swiper.touchEventsData.velocities.length = 0;
-                swiper.freeMode.onTouchEnd({
-                    currentPos: swiper.rtl ? swiper.translate : -swiper.translate
-                });
-            }
-            function onTouchMove() {
-                if (swiper.params.cssMode) return;
-                const {touchEventsData: data, touches} = swiper;
-                if (data.velocities.length === 0) data.velocities.push({
-                    position: touches[swiper.isHorizontal() ? "startX" : "startY"],
-                    time: data.touchStartTime
-                });
-                data.velocities.push({
-                    position: touches[swiper.isHorizontal() ? "currentX" : "currentY"],
-                    time: utils_now()
-                });
-            }
-            function onTouchEnd(_ref2) {
-                let {currentPos} = _ref2;
-                if (swiper.params.cssMode) return;
-                const {params, wrapperEl, rtlTranslate: rtl, snapGrid, touchEventsData: data} = swiper;
-                const touchEndTime = utils_now();
-                const timeDiff = touchEndTime - data.touchStartTime;
-                if (currentPos < -swiper.minTranslate()) {
-                    swiper.slideTo(swiper.activeIndex);
-                    return;
-                }
-                if (currentPos > -swiper.maxTranslate()) {
-                    if (swiper.slides.length < snapGrid.length) swiper.slideTo(snapGrid.length - 1); else swiper.slideTo(swiper.slides.length - 1);
-                    return;
-                }
-                if (params.freeMode.momentum) {
-                    if (data.velocities.length > 1) {
-                        const lastMoveEvent = data.velocities.pop();
-                        const velocityEvent = data.velocities.pop();
-                        const distance = lastMoveEvent.position - velocityEvent.position;
-                        const time = lastMoveEvent.time - velocityEvent.time;
-                        swiper.velocity = distance / time;
-                        swiper.velocity /= 2;
-                        if (Math.abs(swiper.velocity) < params.freeMode.minimumVelocity) swiper.velocity = 0;
-                        if (time > 150 || utils_now() - lastMoveEvent.time > 300) swiper.velocity = 0;
-                    } else swiper.velocity = 0;
-                    swiper.velocity *= params.freeMode.momentumVelocityRatio;
-                    data.velocities.length = 0;
-                    let momentumDuration = 1e3 * params.freeMode.momentumRatio;
-                    const momentumDistance = swiper.velocity * momentumDuration;
-                    let newPosition = swiper.translate + momentumDistance;
-                    if (rtl) newPosition = -newPosition;
-                    let doBounce = false;
-                    let afterBouncePosition;
-                    const bounceAmount = Math.abs(swiper.velocity) * 20 * params.freeMode.momentumBounceRatio;
-                    let needsLoopFix;
-                    if (newPosition < swiper.maxTranslate()) {
-                        if (params.freeMode.momentumBounce) {
-                            if (newPosition + swiper.maxTranslate() < -bounceAmount) newPosition = swiper.maxTranslate() - bounceAmount;
-                            afterBouncePosition = swiper.maxTranslate();
-                            doBounce = true;
-                            data.allowMomentumBounce = true;
-                        } else newPosition = swiper.maxTranslate();
-                        if (params.loop && params.centeredSlides) needsLoopFix = true;
-                    } else if (newPosition > swiper.minTranslate()) {
-                        if (params.freeMode.momentumBounce) {
-                            if (newPosition - swiper.minTranslate() > bounceAmount) newPosition = swiper.minTranslate() + bounceAmount;
-                            afterBouncePosition = swiper.minTranslate();
-                            doBounce = true;
-                            data.allowMomentumBounce = true;
-                        } else newPosition = swiper.minTranslate();
-                        if (params.loop && params.centeredSlides) needsLoopFix = true;
-                    } else if (params.freeMode.sticky) {
-                        let nextSlide;
-                        for (let j = 0; j < snapGrid.length; j += 1) if (snapGrid[j] > -newPosition) {
-                            nextSlide = j;
-                            break;
-                        }
-                        if (Math.abs(snapGrid[nextSlide] - newPosition) < Math.abs(snapGrid[nextSlide - 1] - newPosition) || swiper.swipeDirection === "next") newPosition = snapGrid[nextSlide]; else newPosition = snapGrid[nextSlide - 1];
-                        newPosition = -newPosition;
-                    }
-                    if (needsLoopFix) once("transitionEnd", (() => {
-                        swiper.loopFix();
-                    }));
-                    if (swiper.velocity !== 0) {
-                        if (rtl) momentumDuration = Math.abs((-newPosition - swiper.translate) / swiper.velocity); else momentumDuration = Math.abs((newPosition - swiper.translate) / swiper.velocity);
-                        if (params.freeMode.sticky) {
-                            const moveDistance = Math.abs((rtl ? -newPosition : newPosition) - swiper.translate);
-                            const currentSlideSize = swiper.slidesSizesGrid[swiper.activeIndex];
-                            if (moveDistance < currentSlideSize) momentumDuration = params.speed; else if (moveDistance < 2 * currentSlideSize) momentumDuration = params.speed * 1.5; else momentumDuration = params.speed * 2.5;
-                        }
-                    } else if (params.freeMode.sticky) {
-                        swiper.slideToClosest();
-                        return;
-                    }
-                    if (params.freeMode.momentumBounce && doBounce) {
-                        swiper.updateProgress(afterBouncePosition);
-                        swiper.setTransition(momentumDuration);
-                        swiper.setTranslate(newPosition);
-                        swiper.transitionStart(true, swiper.swipeDirection);
-                        swiper.animating = true;
-                        utils_elementTransitionEnd(wrapperEl, (() => {
-                            if (!swiper || swiper.destroyed || !data.allowMomentumBounce) return;
-                            emit("momentumBounce");
-                            swiper.setTransition(params.speed);
-                            setTimeout((() => {
-                                swiper.setTranslate(afterBouncePosition);
-                                utils_elementTransitionEnd(wrapperEl, (() => {
-                                    if (!swiper || swiper.destroyed) return;
-                                    swiper.transitionEnd();
-                                }));
-                            }), 0);
-                        }));
-                    } else if (swiper.velocity) {
-                        emit("_freeModeNoMomentumRelease");
-                        swiper.updateProgress(newPosition);
-                        swiper.setTransition(momentumDuration);
-                        swiper.setTranslate(newPosition);
-                        swiper.transitionStart(true, swiper.swipeDirection);
-                        if (!swiper.animating) {
-                            swiper.animating = true;
-                            utils_elementTransitionEnd(wrapperEl, (() => {
-                                if (!swiper || swiper.destroyed) return;
-                                swiper.transitionEnd();
-                            }));
-                        }
-                    } else swiper.updateProgress(newPosition);
-                    swiper.updateActiveIndex();
-                    swiper.updateSlidesClasses();
-                } else if (params.freeMode.sticky) {
-                    swiper.slideToClosest();
-                    return;
-                } else if (params.freeMode) emit("_freeModeNoMomentumRelease");
-                if (!params.freeMode.momentum || timeDiff >= params.longSwipesMs) {
-                    emit("_freeModeStaticRelease");
-                    swiper.updateProgress();
-                    swiper.updateActiveIndex();
-                    swiper.updateSlidesClasses();
-                }
-            }
-            Object.assign(swiper, {
-                freeMode: {
-                    onTouchStart,
-                    onTouchMove,
-                    onTouchEnd
-                }
-            });
-        }
         const getHash = () => location.hash ? location.hash.replace("#", "") : null;
         const FLS = message => {
             setTimeout((() => {
@@ -7968,17 +7797,15 @@
             if (modulesArray.length > 0) modulesArray.forEach((module => {
                 if (module === Navigation) defaultOptions.navigation = navigationSlider(sliderNavigationPrev, sliderNavigationNext);
                 if (module === Pagination) defaultOptions.pagination = paginationSlider(sliderPagination, clickablePagination, renderBullets);
-                if (module === freeMode) defaultOptions.freeMode = true;
                 if (module === Autoplay) defaultOptions.autoplay = autoPlaySlider(autoPlaySliderDelay, disableOnInteraction);
             }));
-            console.log("Swiper options:", defaultOptions);
             return defaultOptions;
         };
         const initProjectSlider = () => {
             const projectSlider = document.querySelector("[data-project-slider]");
             if (projectSlider) {
                 new Swiper(projectSlider, {
-                    ...optionsSlider(projectSlider, Navigation, Pagination, freeMode),
+                    ...optionsSlider(projectSlider, Navigation, Pagination),
                     slidesPerView: 1.2,
                     spaceBetween: 10,
                     breakpoints: {
@@ -8027,7 +7854,7 @@
                     slider.item.classList.add("swiper", "items-projects");
                     slider.item.insertAdjacentHTML("beforeend", '<div class="items-projects__bullets" data-slider-pagination data-slider-clickable></div>');
                     objectModules.tabSlider = new Swiper(slider.item, {
-                        ...optionsSlider(slider.item, Pagination, freeMode),
+                        ...optionsSlider(slider.item, Pagination),
                         slidesPerView: 1,
                         spaceBetween: 10,
                         breakpoints: {
@@ -8176,7 +8003,7 @@
                             slider.item.insertAdjacentHTML("beforeend", `<div class="team__bullets" data-slider-pagination data-slider-clickable></div>`);
                             slides.forEach((slide => slide.classList.add("swiper-slide")));
                             teamSlider = new Swiper(slider.item, {
-                                ...optionsSlider(slider.item, Pagination, freeMode),
+                                ...optionsSlider(slider.item, Pagination),
                                 slidesPerView: 1.5,
                                 spaceBetween: 20,
                                 breakpoints: {
@@ -9950,13 +9777,26 @@
         const projectSlider = document.querySelector("[data-project-slider]");
         const portfolioContent = document.querySelector("[data-portfolio-content]");
         const portfolioControls = document.querySelector("[data-portfolio-controls]");
+        const loadMore = document.querySelector(".load-more");
+        let portfolioDataArray = null && [];
+        let startItems = 0;
+        let limitItems = 9;
+        let renderItems = false;
         const createHtmlTemplate = function(project) {
             let slider = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
             const {id, image, title, desc, type, link} = project;
             return `\n    <article class="items-projects__project ${slider ? "swiper-slide" : ""} project-item" data-id=${id} data-type=${type}>\n        <a class="project-item__image" href="${link}">\n          <img src="${image}" loading="lazy" alt="${title}">\n         </a>\n        <div class="project-item__body">\n          <h3 class="project-item__title">${title}</h3>\n            <span class="project-item__type">B${desc}</span>\n            <a class="project-item__button button button--transparent-primary" href="${link}">View Project</a>\n        </div>\n      </article>\n      `;
         };
+        if (portfolioContent) document.addEventListener("click", (async _ref => {
+            let {target} = _ref;
+            if (target.closest(".load-more")) {
+                const activeCategory = document.querySelector(".portfolio-tabs__button.is-active").dataset.filter;
+                await portfolioRender(dataPortfolio, false, activeCategory);
+                updateVisiblePortfolioItems(activeCategory);
+            }
+        }));
         const projectHTML = (data, slider) => {
-            let filteredProjects = [];
+            const filteredProjects = [];
             let htmlTemplate = ``;
             if (slider !== void 0) {
                 filteredProjects = data.filter((project => {
@@ -9973,20 +9813,23 @@
             }));
             return htmlTemplate;
         };
+        const updateVisiblePortfolioItems = filter => {
+            const porfolioItems = portfolioContent.querySelectorAll(".project-item");
+            porfolioItems.forEach((item => {
+                const {type} = item.dataset;
+                filter !== "all" && filter !== type ? item.style.display = "none" : item.style.display = "";
+            }));
+        };
         const tabsControlsAction = e => {
             const {target} = e;
             if (target.closest(".portfolio-tabs__button")) {
                 const controlButton = target.closest(".portfolio-tabs__button");
                 if (controlButton.classList.contains("is-active")) return;
-                const porfolioItems = portfolioContent.querySelectorAll(".project-item");
                 const {filter} = controlButton.dataset;
                 const [activeContol] = [ ...portfolioControls.children ].filter((contol => contol.classList.contains("is-active")));
                 activeContol.classList.remove("is-active");
                 controlButton.classList.add("is-active");
-                porfolioItems.forEach((item => {
-                    const {type} = item.dataset;
-                    filter !== "all" && filter !== type ? item.style.display = "none" : item.style.display = "";
-                }));
+                updateVisiblePortfolioItems(filter);
                 const visibleItems = [ ...portfolioContent.querySelectorAll(".project-item") ].some((item => item.style.display === ""));
                 if (!visibleItems) portfolioContent.insertAdjacentHTML("beforeend", `<div class="tabs-news__error">There is no news from this industry.</div>`); else {
                     const errorTabs = portfolioContent.querySelector(".tabs-news__error");
@@ -9996,11 +9839,14 @@
                     const visibleSlide = objectModules.tabSlider.slides.some((slide => slide.style.display === ""));
                     const sliderBullets = portfolioContent.querySelector("[data-slider-pagination]");
                     !visibleSlide ? sliderBullets.style.display = "none" : sliderBullets.style.display = "";
-                    console.log(objectModules.tabSlider);
                     objectModules.tabSlider.update();
                     objectModules.tabSlider.slideTo(0);
                 }
             }
+        };
+        const hideLoadMore = function() {
+            let show = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : false;
+            if (loadMore) !show ? loadMore.style.display = "none" : loadMore.style.display = "";
         };
         const displayPortfolio = portfolioArray => {
             if (projectSlider) {
@@ -10012,30 +9858,71 @@
             }
             if (portfolioContent) {
                 portfolioContent.insertAdjacentHTML("beforeend", projectHTML(portfolioArray));
-                const tabSliders = document.querySelectorAll("[data-slider]");
-                let mdQueriesArray = dataMediaQueries(tabSliders, "slider");
-                if (mdQueriesArray && mdQueriesArray.length) mdQueriesArray.forEach((mdQueriesItem => {
-                    mdQueriesItem.matchMedia.addEventListener("change", (() => {
-                        initTabSlider(mdQueriesItem.itemsArray, mdQueriesItem.matchMedia);
-                    }));
-                    initTabSlider(mdQueriesItem.itemsArray, mdQueriesItem.matchMedia);
-                }));
                 return;
             }
         };
         if (portfolioControls) portfolioControls.addEventListener("click", tabsControlsAction);
-        const portfolioRender = async dataPortfolio => {
+        const portfolioRender = async function(dataPortfolio) {
+            let slider = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
+            let category = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : null;
+            if (renderItems) return;
             try {
                 const response = await fetch(dataPortfolio);
                 if (!response.ok) throw new Error("Response is not OK");
                 const portfolioData = await response.json();
-                displayPortfolio(portfolioData.portfolio);
+                portfolioDataArray = portfolioData.portfolio;
+                if (!slider) {
+                    const start = startItems;
+                    const end = limitItems;
+                    if (category && category !== "all") {
+                        const porfolioItems = portfolioContent.querySelectorAll(".project-item");
+                        const itemsOnRender = Array.from(porfolioItems).map((item => item.dataset.id));
+                        const itemsToRender = portfolioData.portfolio.slice(start, portfolioData.portfolio.length);
+                        const itemsToRenderByCategory = itemsToRender.filter((item => item.type === category && !itemsOnRender.includes(item.id)));
+                        if (!itemsToRenderByCategory.length) return;
+                        displayPortfolio(itemsToRenderByCategory);
+                        startItems += itemsToRenderByCategory.length;
+                        limitItems += itemsToRenderByCategory.length;
+                    } else {
+                        const itemsToRender = portfolioData.portfolio.slice(start, end);
+                        displayPortfolio(itemsToRender);
+                        startItems = limitItems;
+                        limitItems += 3;
+                    }
+                    if (end >= portfolioData.portfolio.length) {
+                        hideLoadMore();
+                        renderItems = true;
+                    }
+                } else {
+                    portfolioContent.innerHTML = "";
+                    displayPortfolio(portfolioData.portfolio);
+                    hideLoadMore();
+                    renderItems = true;
+                }
             } catch (error) {
-                portfolioContent.innerHTML = `<div class="portfolio-tabs__error">Failed to load portfolio, please try again</div>`;
+                if (portfolioContent) portfolioContent.innerHTML = `<div class="portfolio-tabs__error">Failed to load portfolio, please try again</div>`;
             }
         };
         window.addEventListener("load", (() => {
-            if (projectSlider || portfolioContent) portfolioRender(dataPortfolio);
+            if (projectSlider) portfolioRender(dataPortfolio, true);
+            if (portfolioContent) {
+                const tabSliders = document.querySelectorAll("[data-slider]");
+                let mdQueriesArray = dataMediaQueries(tabSliders, "slider");
+                if (mdQueriesArray && mdQueriesArray.length) mdQueriesArray.forEach((async mdQueriesItem => {
+                    mdQueriesItem.matchMedia.addEventListener("change", (async () => {
+                        if (mdQueriesItem.matchMedia.matches) {
+                            await portfolioRender(dataPortfolio, true);
+                            hideLoadMore();
+                        } else await portfolioRender(dataPortfolio);
+                        initTabSlider(mdQueriesItem.itemsArray, mdQueriesItem.matchMedia);
+                    }));
+                    if (mdQueriesItem.matchMedia.matches) {
+                        await portfolioRender(dataPortfolio, true);
+                        hideLoadMore();
+                    } else await portfolioRender(dataPortfolio);
+                    initTabSlider(mdQueriesItem.itemsArray, mdQueriesItem.matchMedia);
+                }));
+            }
         }));
         const dataNews = "resources/news.json";
         const newsContent = document.querySelector("[data-news-content]");
