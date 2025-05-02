@@ -9778,7 +9778,6 @@
         const portfolioContent = document.querySelector("[data-portfolio-content]");
         const portfolioControls = document.querySelector("[data-portfolio-controls]");
         const loadMore = document.querySelector(".load-more");
-        let portfolioDataArray = null && [];
         let startItems = 0;
         let limitItems = 9;
         let renderItems = false;
@@ -9796,7 +9795,7 @@
             }
         }));
         const projectHTML = (data, slider) => {
-            const filteredProjects = [];
+            let filteredProjects = [];
             let htmlTemplate = ``;
             if (slider !== void 0) {
                 filteredProjects = data.filter((project => {
@@ -9870,7 +9869,6 @@
                 const response = await fetch(dataPortfolio);
                 if (!response.ok) throw new Error("Response is not OK");
                 const portfolioData = await response.json();
-                portfolioDataArray = portfolioData.portfolio;
                 if (!slider) {
                     const start = startItems;
                     const end = limitItems;
@@ -9894,7 +9892,7 @@
                         renderItems = true;
                     }
                 } else {
-                    portfolioContent.innerHTML = "";
+                    if (portfolioContent) portfolioContent.innerHTML = "";
                     displayPortfolio(portfolioData.portfolio);
                     hideLoadMore();
                     renderItems = true;
