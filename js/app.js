@@ -3776,6 +3776,11 @@
     (() => {
         "use strict";
         const objectModules = {};
+        const addLoadedClass = () => {
+            if (!document.documentElement.classList.contains("loading")) window.addEventListener("load", (() => {
+                setTimeout((() => document.documentElement.classList.add("loaded")), 0);
+            }));
+        };
         let bodyLockStatus = true;
         const bodyLockToggle = function() {
             let delay = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 500;
@@ -7757,7 +7762,8 @@
             let renderBullet = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : false;
             const paginationConfig = {
                 el: paginationEl,
-                clickable
+                clickable,
+                dynamicBullets: paginationEl?.hasAttribute("data-dynamic-bullets") ? true : false
             };
             if (renderBullet) paginationConfig.renderBullet = renderBullets;
             return paginationConfig;
@@ -7776,9 +7782,11 @@
                 FLS(`Slider with selector "${selector}" not found.`);
                 return {};
             }
+            const countSlides = slider.querySelectorAll(".swiper-slide").length;
             const sliderNavigationPrev = slider.querySelector("[data-slider-navigation-prev]") || slider.parentNode.querySelector("[data-slider-navigation-prev]");
             const sliderNavigationNext = slider.querySelector("[data-slider-navigation-next]") || slider.parentNode.querySelector("[data-slider-navigation-next]");
             const sliderPagination = slider.querySelector("[data-slider-pagination]");
+            if (countSlides > 2 && !slider.closest("[data-hero-slider]") && !slider.closest("[data-work-slider-main]") && !slider.closest("[data-work-slider-nav]") && !slider.closest("[data-history-slider]")) sliderPagination.setAttribute("data-dynamic-bullets", "");
             const clickablePagination = sliderPagination?.hasAttribute("data-slider-clickable") ? true : false;
             const renderBullets = sliderPagination?.hasAttribute("data-render-bullet") ? true : false;
             const autoPlaySliderDelay = +slider.dataset.sliderAutoplay || 3e3;
@@ -10096,6 +10104,7 @@
             }
         };
         window["FLS"] = true;
+        addLoadedClass();
         pagination();
         accordion();
         headerHeight();
